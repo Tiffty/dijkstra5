@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dijkstra 5</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body >
+	<div>	
+<h1>Dijkstra algoritm</h1>
+<h2>5 vertexes</h2>
+<form>
+  <label>From:</label><br>
+  <input type="text" id="from" placeholder="0 - 4"><br><br>
+  <label>To:</label><br>
+  <input type="text" id="to" placeholder="0 - 4">
+</form>
+<br>
+
+<br>
+
+<canvas id="canvas" width="494" height="450"></canvas>
+
+<input type="text" class="edges" id="edge1" placeholder="0">
+<input type="text" class="edges" id="edge2" placeholder="0">
+<input type="text" class="edges" id="edge3" placeholder="0">
+<input type="text" class="edges" id="edge4" placeholder="0">
+
+<input type="text" class="edges" id="edge5" placeholder="0">
+<input type="text" class="edges" id="edge6" placeholder="0">
+<input type="text" class="edges" id="edge7" placeholder="0">
+
+<input type="text" class="edges" id="edge8" placeholder="0">
+<input type="text" class="edges" id="edge9" placeholder="0">
+
+<input type="text" class="edges" id="edge10" placeholder="0">
+
+<br>
+
+<button type="button" onclick="reset();">Reset</button>
+
+<br><br><br>
+
+<button type="button" onclick="start();">Find</button>
+
+
+<br><br>
+<p id="out"></p>
+
+<script>
+
+		let from, to,
+			edge1, edge2, edge3, edge4, edge5, edge6, edge7, edge8, edge9, edge10;
+
+		function reset() {
+			document.getElementById("edge1").value = '';
+			document.getElementById("edge2").value = '';
+			document.getElementById("edge3").value = '';
+			document.getElementById("edge4").value = '';
+			document.getElementById("edge5").value = '';
+			document.getElementById("edge6").value = '';
+			document.getElementById("edge7").value = '';
+			document.getElementById("edge8").value = '';
+			document.getElementById("edge9").value = '';
+			document.getElementById("edge10").value = '';
+		}
+
+		function start() {
+			document.getElementById('out').innerHTML = "";
+			from = +document.getElementById("from").value;
+			to = +document.getElementById("to").value;
+			if (from < 0    ||
+				from > 4    ||
+				to < 0 || 
+				to > 4 || 
+				from == to  ||
+				typeof(from) != "number" ||
+				typeof(to) != "number" ||
+				isNaN(from)    || 
+				isNaN(to) 
+				)
+				alert("Check the values! \n(NUMBERS from 0-4)");
+			else {
+
+				edge1 = getWeight( +document.getElementById("edge1").value );
+				edge2 = getWeight( +document.getElementById("edge2").value );
+				edge3 = getWeight( +document.getElementById("edge3").value );
+				edge4 = getWeight( +document.getElementById("edge4").value );
+
+				edge5 = getWeight( +document.getElementById("edge5").value );
+				edge6 = getWeight( +document.getElementById("edge6").value );
+				edge7 = getWeight( +document.getElementById("edge7").value );
+
+				edge8 = getWeight( +document.getElementById("edge8").value );
+				edge9 = getWeight( +document.getElementById("edge9").value );
+
+				edge10 = getWeight( +document.getElementById("edge10").value );
+
+				let matrix = [
+				  [0, edge1, edge2, edge3, edge4], 
+				  [edge1, 0, edge7, edge6, edge5], 
+				  [edge2, edge7, 0, edge9, edge8],
+				  [edge3, edge6, edge9, 0, edge10],
+				  [edge4, edge5, edge8, edge10, 0]
+				];
+
+ 				dijkstra(matrix, 5, from, to)
+
+			};
+		}
+
+		const canvas = document.getElementById('canvas');	// canvas constants
+		const ctx = canvas.getContext('2d');
+
+		let ColorGray = '#cbc4cf';
+		let ColorConnect = '#8ced9a';
+		let ColorVertex = '#90bade';
+
+		function edgeColorCheck1() {
+				edge1 = getWeight( +document.getElementById("edge1").value );
+				if ( edge1 == undefined || edge1 <= 0) {ctx.strokeStyle = ColorGray; document.getElementById("edge1").style.borderColor = "#cbc4cf";}
+				else { ctx.strokeStyle = ColorConnect; document.getElementById("edge1").style.borderColor = "#8ced9a"; }
+		}
+		function edgeColorCheck2() {
+				edge2 = getWeight( +document.getElementById("edge2").value );
+				if ( edge2 == undefined || edge2 <= 0) {ctx.strokeStyle = ColorGray; document.getElementById("edge2").style.borderColor = "#cbc4cf";}
+				else { ctx.strokeStyle = ColorConnect; document.getElementById("edge2").style.borderColor = "#8ced9a"; }
+		}
+		function edgeColorCheck3() {
+				edge3 = getWeight( +document.getElementById("edge3").value );
+				if ( edge3 == undefined || edge3 <= 0) {ctx.strokeStyle = ColorGray; document.getElementById("edge3").style.borderColor = "#cbc4cf";}
+				else { ctx.strokeStyle = ColorConnect; document.getElementById("edge3").style.borderColor = "#8ced9a"; }
+		}
+		function edgeColorCheck4() {
+				edge4 = getWeight( +document.getElementById("edge4").value );
+				if ( edge4 == undefined || edge4 <= 0) {ctx.strokeStyle = ColorGray; document.getElementById("edge4").style.borderColor = "#cbc4cf";}
+				else { ctx.strokeStyle = ColorConnect; document.getElementById("edge4").style.borderColor = "#8ced9a"; }
+		}
+		function edgeColorCheck5() {
+				edge5 = getWeight( +document.getElementById("edge5").value );
+				if ( edge5 == undefined || edge5 <= 0) {ctx.strokeStyle = ColorGray; document.getElementById("edge5").style.borderColor = "#cbc4cf";}
+				else { ctx.strokeStyle = ColorConnect; document.getElementById("edge5").style.borderColor = "#8ced9a"; }
+		}
+		function edgeColorCheck6() {
+				edge6 = getWeight( +document.getElementById("edge6").value );
+				if ( edge6 == undefined || edge6 <= 0) {ctx.strokeStyle = ColorGray; document.getElementById("edge6").style.borderColor = "#cbc4cf";}
+				else { ctx.strokeStyle = ColorConnect; document.getElementById("edge6").style.borderColor = "#8ced9a"; }
+		}
+		function edgeColorCheck7() {
+				edge7 = getWeight( +document.getElementById("edge7").value );
+				if ( edge7 == undefined || edge7 <= 0) {ctx.strokeStyle = ColorGray; document.getElementById("edge7").style.borderColor = "#cbc4cf";}
+				else { ctx.strokeStyle = ColorConnect; document.getElementById("edge7").style.borderColor = "#8ced9a"; }
+		}
+		function edgeColorCheck8() {
+				edge8 = getWeight( +document.getElementById("edge8").value );
+				if ( edge8 == undefined || edge8 <= 0) {ctx.strokeStyle = ColorGray; document.getElementById("edge8").style.borderColor = "#cbc4cf";}
+				else { ctx.strokeStyle = ColorConnect; document.getElementById("edge8").style.borderColor = "#8ced9a"; }
+		}
+		function edgeColorCheck9() {
+				edge9 = getWeight( +document.getElementById("edge9").value );
+				if ( edge9 == undefined || edge9 <= 0) {ctx.strokeStyle = ColorGray; document.getElementById("edge9").style.borderColor = "#cbc4cf";}
+				else { ctx.strokeStyle = ColorConnect; document.getElementById("edge9").style.borderColor = "#8ced9a"; }
+		}
+		function edgeColorCheck10() {
+				edge10 = getWeight( +document.getElementById("edge10").value );
+				if ( edge10 == undefined || edge10 <= 0) {ctx.strokeStyle = ColorGray; document.getElementById("edge10").style.borderColor = "#cbc4cf";}
+				else { ctx.strokeStyle = ColorConnect; document.getElementById("edge10").style.borderColor = "#8ced9a"; }
+		}
+
+		function updateCanvas() { // -8 / +10
+
+			ctx.lineWidth = 3;
+			ctx.strokeStyle = ColorGray; 
+
+			ctx.beginPath();	// 0 - 1 ed1
+				edgeColorCheck1();
+				ctx.moveTo(50, 190);
+			   	ctx.lineTo(250, 60);
+			   	ctx.stroke();
+			ctx.closePath();
+
+			ctx.beginPath();	// 0 - 2 ed2
+			   	edgeColorCheck2();
+				ctx.moveTo(50, 190);
+			   	ctx.lineTo(460, 190);
+			   	ctx.stroke();
+			ctx.closePath();
+			   		
+			ctx.beginPath();	// 0 - 3 ed3
+			   	edgeColorCheck3();
+				ctx.moveTo(50, 190);
+			   	ctx.lineTo(348, 375);
+			   	ctx.stroke();
+			ctx.closePath();
+
+			ctx.beginPath();	// 0 - 4 ed4
+			   	edgeColorCheck4();
+				ctx.moveTo(50, 190);
+			   	ctx.lineTo(150, 375);
+			   	ctx.stroke();
+			ctx.closePath();
+
+
+			ctx.beginPath();	// 1 - 4 ed5
+			   	edgeColorCheck5();
+				ctx.moveTo(250, 60);
+			   	ctx.lineTo(150, 375);
+			   	ctx.stroke();
+			ctx.closePath();
+
+			ctx.beginPath();	// 1 - 3 ed6
+			   	edgeColorCheck6();
+				ctx.moveTo(250, 60);
+			   	ctx.lineTo(348, 375);
+			   	ctx.stroke();
+			ctx.closePath();
+
+			ctx.beginPath();	// 1 - 2 ed7
+			   	edgeColorCheck7();
+				ctx.moveTo(250, 60);
+			   	ctx.lineTo(440, 190);
+			   	ctx.stroke();
+			ctx.closePath();
+
+
+			ctx.beginPath();	// 2 - 4 ed8
+			   	edgeColorCheck8();
+				ctx.moveTo(440, 190);
+			   	ctx.lineTo(150, 375);
+			   	ctx.stroke();
+			ctx.closePath();
+
+			ctx.beginPath();	// 2 - 3 ed9
+			   	edgeColorCheck9();
+				ctx.moveTo(440, 190);
+			   	ctx.lineTo(348, 375);
+			   	ctx.stroke();
+			ctx.closePath();
+
+			ctx.beginPath();	// 3 - 4 ed10
+			   	edgeColorCheck10();
+				ctx.moveTo(348, 375);
+			   	ctx.lineTo(150, 375);
+			   	ctx.stroke();
+			ctx.closePath();
+
+
+			ctx.fillStyle = ColorVertex;
+
+			ctx.beginPath(); // vertex 0 circle
+
+			   	ctx.arc(50, 190, 30, 0, Math.PI * 2, true);
+			    ctx.fill();
+			ctx.closePath();
+
+			ctx.beginPath();// vertex 1 circle	
+
+			   	ctx.arc(250, 60, 30, 0, Math.PI * 2, true);
+			    ctx.fill();
+			ctx.closePath();
+
+			ctx.beginPath();// vertex 2 circle
+
+			   	ctx.arc(440, 190, 30, 0, Math.PI * 2, true);
+			    ctx.fill();
+			ctx.closePath();
+
+			ctx.beginPath();// vertex 3 circle
+
+			   	ctx.arc(348, 375, 30, 0, Math.PI * 2, true);
+			    ctx.fill();
+			ctx.closePath();
+
+			ctx.beginPath();// vertex 4 circle
+
+			   	ctx.arc(150, 375, 30, 0, Math.PI * 2, true);
+			    ctx.fill();
+			ctx.closePath();
+
+
+			// vertex captions
+			    ctx.font = "30px Arial";
+			    ctx.fillStyle = 'white';
+
+			ctx.beginPath();
+    	  		ctx.fillText('0', 42, 200);
+    	  	ctx.closePath();
+
+    	  	ctx.beginPath();
+    	  		ctx.fillText('1', 242, 70);
+			ctx.closePath();
+
+    	  	ctx.beginPath();
+    	  		ctx.fillText('2', 432, 200);
+			ctx.closePath();
+
+    	  	ctx.beginPath();
+    	  		ctx.fillText('3', 340, 385);
+			ctx.closePath();
+
+    	  	ctx.beginPath();
+    	  		ctx.fillText('4', 142, 385);
+	    	ctx.closePath();
+
+			requestAnimationFrame(updateCanvas);
+		}
+		updateCanvas();
+
+		function getWeight(edge) {
+			if (isNaN(edge) || edge < 0) return 0;
+			else return edge;console.log(4);
+		}
+
+
+		function dijkstra(matrix, size, beginId, endId) {
+
+			// init
+
+			let inf = 99999;
+
+			let distances = [];
+			let vertexes = [];
+
+			let temp, min, minId;
+
+			for (let i = 0; i < size; i++) {
+				distances[i] = inf;
+				vertexes[i] = 1;
+			}
+
+
+			distances[beginId] = 0;
+
+			// main alg
+
+			do {				
+				minId = inf;
+				min = inf;
+
+				for (let i = 0; i < size; i++) {
+					if (vertexes[i]==1 && distances[i]<min) {
+						min = distances[i];
+						minId = i;
+					}
+				}
+
+				if (minId != inf) {
+					for (let i = 0; i < size; i++) {
+						if (matrix[minId][i] > 0) {
+							temp = min + matrix[minId][i];
+							if (temp < distances[i]) {
+								distances[i] = temp;
+							}
+						}
+					}
+					vertexes[minId] = 0;
+				}
+			} while(minId < inf);
+
+
+			// rev way
+
+			let doneVertexes = [];
+			doneVertexes[0] = endId ;
+			let prevId = 1;
+			let weight = distances[endId];
+			while (endId != beginId) {
+				for (let i = 0; i < size; i++) {
+					if (matrix[i][endId] != 0) {
+						temp = weight - matrix[i][endId];
+						if (temp == distances[i]) {
+							weight = temp;
+							endId = i;
+							doneVertexes[prevId] = i ;
+							prevId++;
+						}
+					}
+				}
+			}
+
+			// out way
+
+			for (let i = prevId-1; i >= 0; i--) {
+					document.getElementById('out').innerHTML += doneVertexes[i];
+					if (doneVertexes[i-1] != undefined) 
+						document.getElementById('out').innerHTML += " > ";
+			}
+
+		}
+</script>
+</div>
+</body>
+</html>

@@ -1,0 +1,60 @@
+html {
+	font-family: arial;
+}
+
+.edges {
+	position: absolute;
+	width: 25px;
+	border: 3px solid #cbc4cf;
+	text-align: center; 
+}
+
+#edge1 {
+ 	top: 380px;
+ 	left: 128px;
+}
+#edge2 {
+ 	top: 438px;
+ 	left: 155px;
+}
+#edge3 {
+ 	top: 490px;
+ 	left: 126px;
+}
+#edge4 {
+ 	top: 538px;
+ 	left: 95px;
+}
+
+#edge5 {
+ 	top: 396px;
+ 	left: 211px;
+}
+#edge6 {
+	top: 396px;
+ 	left: 272px;
+}
+#edge7 {
+ 	top: 376px;
+ 	left: 340px;
+}
+
+#edge8 {
+ 	top: 482px;
+ 	left: 360px;
+}
+#edge9 {
+	top: 540px;
+ 	left: 379px;
+}
+
+#edge10 {
+	top: 623px;
+ 	left: 242px;
+}
+
+canvas {
+  background: white;
+  display: block;
+  border-radius: 5px;
+}
